@@ -15,11 +15,11 @@ from shutil import copyfile
 def gethostingserver(gis):
     """
     Finds the Hosting Server associated with Portal and gets the public URL.
-    The assumption with this script is that we are trying to fix Hosted Features
-    Services that are associated with this URL.
+    The assumption is that we are trying to fix Hosted Features Services
+    that are associated with this URL.
 
     Input
-        gis - Geosaurus connection object
+        gis - Python API connection object
     Output:
         string of the Hosting server public URL (not admin URL); if not found, None
     """
@@ -35,11 +35,12 @@ def gethostingserver(gis):
 
 def openurl(url,params = None):
     """
-    Makes a manual REST call to a URL with params
+    Makes a manual REST call to a URL with params.  We are using this for any
+    REST calls not currently supported by the Python API for ArcGIS.
 
     Input
         url
-        parameters
+        params - JSON object of parameters to use
     Output:
         JSON response
     """
@@ -67,7 +68,7 @@ def updateitem(serviceAdminURL, token, serviceJSON):
     Input
         serviceAdminURL - ArcGIS Server Admin API url
         token - token for connecting to the ArcGIS Server
-        serviceJSON - full JSON service definition for service
+        serviceJSON - full JSON service properties
     Output:
         JSON response
     """
@@ -126,7 +127,7 @@ def main(argv):
             os.makedirs(path)
         except OSError:
             if not os.path.isdir(path):
-                sys.exit("Unable to create full path to backup location for files:  {}".format(os.path.join(backuploc, "content", "items")))
+                sys.exit("Unable to create full path to backup location for files:  {}".format(path))
 
     # Find all items in the Portal that are of type Feature Service and not owned by a particular user.
     #   The basic assumption here is that this particular user owns all of the Feature Services after a
